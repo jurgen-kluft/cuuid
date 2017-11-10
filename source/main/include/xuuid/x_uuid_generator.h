@@ -1,6 +1,6 @@
 #ifndef __XUUID_UUID_GENERATOR_H__
 #define __XUUID_UUID_GENERATOR_H__
-#include "xbase\x_target.h"
+#include "xbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
@@ -8,10 +8,10 @@
 //==============================================================================
 // INCLUDES
 //==============================================================================
-#include "xuuid\x_uuid.h"
-#include "xtime\x_datetime.h"
-#include "xrandom\x_random.h"
-#include "xrandom\x_random_good.h"
+#include "xuuid/x_uuid.h"
+#include "xtime/x_datetime.h"
+#include "xrandom/x_random.h"
+#include "xrandom/x_random_good.h"
 //#include "xsystem\x_system.h"
 
 namespace xcore
