@@ -1,0 +1,20 @@
+#ignore all files
+*.*
+vendor/
+
+#except the following files
+!*.go
+!*.cpp
+!*.hpp
+!*.c
+!*.h
+!*.inl
+
+!*.cs
+!*.csproj
+!*.resx
+
+!*.ini
+!*.bat
+
+#except the following folders
