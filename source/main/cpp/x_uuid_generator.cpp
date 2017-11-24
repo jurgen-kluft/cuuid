@@ -1,5 +1,5 @@
 #include "xbase/x_debug.h"
-#include "xbase/x_string_std.h"
+#include "xbase/x_string_ascii.h"
 #include "xuuid/x_uuid_generator.h"
 #include "xhash/x_md5.h"
 
@@ -38,15 +38,14 @@ namespace xcore
 		u32 timeLow = u32(tv & 0xFFFFFFFF);
 		u16 timeMid = u16((tv >> 32) & 0xFFFF);
 		u16 timeHiAndVersion = u16((tv >> 48) & 0x0FFF) + (xuuid::UUID_TIME_BASED << 12);
-		u16 clockSeq = (u16(_random.next() >> 4) & 0x3FFF) | 0x8000;
+		u16 clockSeq = (u16(_random.rand() >> 4) & 0x3FFF) | 0x8000;
 		return xuuid(timeLow, timeMid, timeHiAndVersion, clockSeq, _node);
 	}
 
 	xuuid xuuid_generator::createFromName(const xuuid& nsid, const char* name)
 	{
 		xdigest_engine_md5 md5;
-		xdigest_engine de(&md5);
-		return createFromName(nsid, name, de);
+		return createFromName(nsid, name, md5);
 	}
 
 	xuuid xuuid_generator::createFromName(const xuuid& nsid, const char* name, xdigest_engine& de)
@@ -64,7 +63,7 @@ namespace xcore
 		de.update(&uuid_buffer[ 6], 2);
 		de.update(&uuid_buffer[ 8], 2);
 		de.update(&uuid_buffer[10], 6);
-		de.update(name, x_strlen(name));
+		de.update(name, ascii::size(name));
 		de.digest(digest);
 
 		return xuuid_(digest, xuuid::UUID_NAME_BASED);
@@ -74,7 +73,7 @@ namespace xcore
 	xuuid xuuid_generator::createRandom()
 	{
 		xbyte buffer[16];
-		_random.randBuffer(buffer, sizeof(buffer));
+		xrandom_utils::randBuffer(_random, buffer, sizeof(buffer));
 		return xuuid_(buffer, xuuid::UUID_RANDOM);
 	}
 

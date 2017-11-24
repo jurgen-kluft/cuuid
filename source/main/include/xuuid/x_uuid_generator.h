@@ -12,7 +12,6 @@
 #include "xtime/x_datetime.h"
 #include "xrandom/x_random.h"
 #include "xrandom/x_random_good.h"
-//#include "xsystem\x_system.h"
 
 namespace xcore
 {
@@ -59,7 +58,7 @@ namespace xcore
 		void					getNode();
 
 	private:
-		xrandom_good			_random;
+		xrng_good				_random;
 		xdatetime				_lastTime;
 		s32						_ticks;
 		xsystem::xnode_id		_node;
