@@ -3,6 +3,7 @@
 #include "xuuid/x_uuid_generator.h"
 #include "xhash/x_md5.h"
 
+
 namespace xcore
 {
 	class xuuid_ : public xuuid
@@ -26,9 +27,10 @@ namespace xcore
 
 	xuuid xuuid_generator::create()
 	{
+		xnode_t node;
 		if (!_haveNode)
 		{
-			xsystem::nodeId(_node);
+			//xsystem::nodeId(_node);
 			_haveNode = true;
 		}
 		xdatetime dt;
@@ -39,7 +41,7 @@ namespace xcore
 		u16 timeMid = u16((tv >> 32) & 0xFFFF);
 		u16 timeHiAndVersion = u16((tv >> 48) & 0x0FFF) + (xuuid::UUID_TIME_BASED << 12);
 		u16 clockSeq = (u16(_random.rand() >> 4) & 0x3FFF) | 0x8000;
-		return xuuid(timeLow, timeMid, timeHiAndVersion, clockSeq, _node);
+		return xuuid(timeLow, timeMid, timeHiAndVersion, clockSeq, node);
 	}
 
 	xuuid xuuid_generator::createFromName(const xuuid& nsid, const char* name)

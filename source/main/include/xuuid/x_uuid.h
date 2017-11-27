@@ -8,11 +8,21 @@
 //==============================================================================
 // INCLUDES
 //==============================================================================
-#include "xbase/x_debug.h"
-
 
 namespace xcore
 {
+	struct xnode_t
+	{
+		enum ESize { SIZE = 6 };
+		u8		n8[SIZE];
+
+		void	clear()
+		{
+			for (s32 i = 0; i < SIZE; ++i)
+				n8[i] = 0;
+		}
+	};
+
 	// A xuuid is an identifier that is unique across both space and time,
 	// with respect to the space of all UUIDs. Since a xuuid is a fixed
 	// size and contains a time field, it is possible for values to
@@ -63,7 +73,7 @@ namespace xcore
 		/// members and returns true. Otherwise leaves the 
 		/// object unchanged and returns false.
 
-		void		toString(char* str, s32 max_str_len) const;
+		void		toString(char* str, char* str_end) const;
 		/// Returns a string representation of the xuuid consisting
 		/// of groups of hexadecimal digits separated by hyphens.
 
@@ -116,7 +126,7 @@ namespace xcore
 		/// Returns the namespace identifier for the X500 namespace.
 
 	protected:
-						xuuid(u32 timeLow, u32 timeMid, u32 timeHiAndVersion, u16 clockSeq, u8 node[]);
+						xuuid(u32 timeLow, u32 timeMid, u32 timeHiAndVersion, u16 clockSeq, xnode_t node);
 						xuuid(const xbyte* bytes, Version version);
 		
 		s32				compare(const xuuid& uuid) const;
@@ -135,7 +145,7 @@ namespace xcore
 		u16				_timeMid;
 		u16				_timeHiAndVersion;
 		u16				_clockSeq;
-		u8				_node[6];
+		xnode_t			_node;
 
 		friend class	xuuid_generator;
 	};

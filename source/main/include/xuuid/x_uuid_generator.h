@@ -61,7 +61,7 @@ namespace xcore
 		xrng_good				_random;
 		xdatetime				_lastTime;
 		s32						_ticks;
-		xsystem::xnode_id		_node;
+		xnode_t					_node;
 		bool					_haveNode;
 
 		xuuid_generator(const xuuid_generator&);
