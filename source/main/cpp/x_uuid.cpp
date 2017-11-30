@@ -12,7 +12,7 @@ namespace xcore
 		, _timeHiAndVersion(0)
 		, _clockSeq(0)
 	{
-		_node.clear();
+		_mac.clear();
 	}
 
 	xuuid::xuuid(const xuuid& uuid)
@@ -21,7 +21,7 @@ namespace xcore
 		, _timeHiAndVersion(uuid._timeHiAndVersion)
 		, _clockSeq(uuid._clockSeq)
 	{
-		_node = uuid._node;
+		_mac = uuid._mac;
 	}
 
 	xuuid::xuuid(const char* uuid)
@@ -30,13 +30,13 @@ namespace xcore
 	}
 
 
-	xuuid::xuuid(u32 timeLow, u32 timeMid, u32 timeHiAndVersion, u16 clockSeq, xnode_t node)
+	xuuid::xuuid(u32 timeLow, u32 timeMid, u32 timeHiAndVersion, u16 clockSeq, xmac_t node)
 		: _timeLow(timeLow)
 		, _timeMid(timeMid)
 		, _timeHiAndVersion(timeHiAndVersion)
 		, _clockSeq(clockSeq)
 	{
-		_node = node;
+		_mac = node;
 	}
 
 	xuuid::xuuid(const xbyte* bytes, Version version)
@@ -63,7 +63,7 @@ namespace xcore
 			_timeMid = uuid._timeMid;
 			_timeHiAndVersion = uuid._timeHiAndVersion;
 			_clockSeq         = uuid._clockSeq;
-			_node             = uuid._node;
+			_mac             = uuid._mac;
 		}
 		return *this;
 	}
@@ -88,7 +88,7 @@ namespace xcore
 		swap_u16(_timeHiAndVersion, uuid._timeHiAndVersion);
 		swap_u16(_clockSeq, uuid._clockSeq);
 		for (s32 i=0; i<6; ++i)
-			swap_u8(_node.n8[i], uuid._node.n8[i]);
+			swap_u8(_mac.n8[i], uuid._mac.n8[i]);
 	}
 	
 	bool xuuid::tryParse(const char* uuid)
@@ -124,7 +124,7 @@ namespace xcore
 
 		++it;
 		for (s32 i = 0; i < 6; ++i)
-			_node.n8[i] = (nibble(*it++) << 4) | nibble(*it++) ;			
+			_mac.n8[i] = (nibble(*it++) << 4) | nibble(*it++) ;			
 
 		return true;
 	}
@@ -133,7 +133,7 @@ namespace xcore
 	void	xuuid::toString(char* str, char* str_end) const
 	{
 		ascii::sprintf(str, str_end, "%08X-%04X-%04X-%04X-", NULL, x_va(_timeLow), x_va(_timeMid), x_va(_timeHiAndVersion), x_va(_clockSeq));
-		ascii::sprintf(str, str_end, "%02X%02X%02X%02X%02X%02X", x_va(_node.n8[0]), x_va(_node.n8[1]), x_va(_node.n8[2]), x_va(_node.n8[3]), x_va(_node.n8[4]), x_va(_node.n8[5]));
+		ascii::sprintf(str, str_end, "%02X%02X%02X%02X%02X%02X", x_va(_mac.n8[0]), x_va(_mac.n8[1]), x_va(_mac.n8[2]), x_va(_mac.n8[3]), x_va(_mac.n8[4]), x_va(_mac.n8[5]));
 	}
 
 	inline xbyte const* from_bytes(xbyte const* b, u32& value)
@@ -168,7 +168,7 @@ namespace xcore
 		_clockSeq = x_NetworkEndian::swap(i16);
 
 		for (s32 i=0; i<6; ++i)
-			_node.n8[i] = bytes[i];
+			_mac.n8[i] = bytes[i];
 	}
 
 	inline xbyte* to_bytes(xbyte* b, u32 value)
@@ -200,8 +200,8 @@ namespace xcore
 		    i16 = x_NetworkEndian::swap(_clockSeq);
 		bytes   = to_bytes(bytes, i16);
 
-		xbyte const* n = (xbyte const*)_node.n8;
-		for (s32 i=0; i<xnode_t::SIZE; ++i)
+		xbyte const* n = (xbyte const*)_mac.n8;
+		for (s32 i=0; i<xmac_t::SIZE; ++i)
 			bytes[i] = n[i];
 	}
 
@@ -223,11 +223,11 @@ namespace xcore
 		if (_timeMid != uuid._timeMid) return _timeMid < uuid._timeMid ? -1 : 1;
 		if (_timeHiAndVersion != uuid._timeHiAndVersion) return _timeHiAndVersion < uuid._timeHiAndVersion ? -1 : 1;
 		if (_clockSeq != uuid._clockSeq) return _clockSeq < uuid._clockSeq ? -1 : 1;
-		for (s32 i = 0; i < xnode_t::SIZE; ++i)
+		for (s32 i = 0; i < xmac_t::SIZE; ++i)
 		{
-			if (_node.n8[i] < uuid._node.n8[i])
+			if (_mac.n8[i] < uuid._mac.n8[i])
 				return -1;
-			else if (_node.n8[i] > uuid._node.n8[i])
+			else if (_mac.n8[i] > uuid._mac.n8[i])
 				return 1;	
 		}
 		return 0;

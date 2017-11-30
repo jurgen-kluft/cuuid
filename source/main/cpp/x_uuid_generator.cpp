@@ -16,8 +16,9 @@ namespace xcore
 	};
 
 	xuuid_generator::xuuid_generator()
-		: _ticks(0)
-		, _haveNode(false)
+		: _initialized(false)
+		, _ticks(0)
+		, _haveMac(false)
 	{
 	}
 
@@ -25,14 +26,21 @@ namespace xcore
 	{
 	}
 
+	void xuuid_generator::init()
+	{
+		_random.init();
+		if (!_haveMac)
+		{
+			_mac.clear();
+			//xsystem::get_mac_address(_mac);
+			_haveMac = true;
+		}
+	}
+
 	xuuid xuuid_generator::create()
 	{
-		xnode_t node;
-		if (!_haveNode)
-		{
-			//xsystem::nodeId(_node);
-			_haveNode = true;
-		}
+		init();
+
 		xdatetime dt;
 		timeStamp(dt);
 
@@ -41,11 +49,13 @@ namespace xcore
 		u16 timeMid = u16((tv >> 32) & 0xFFFF);
 		u16 timeHiAndVersion = u16((tv >> 48) & 0x0FFF) + (xuuid::UUID_TIME_BASED << 12);
 		u16 clockSeq = (u16(_random.rand() >> 4) & 0x3FFF) | 0x8000;
-		return xuuid(timeLow, timeMid, timeHiAndVersion, clockSeq, node);
+		return xuuid(timeLow, timeMid, timeHiAndVersion, clockSeq, _mac);
 	}
 
 	xuuid xuuid_generator::createFromName(const xuuid& nsid, const char* name)
 	{
+		init();
+
 		xdigest_engine_md5 md5;
 		return createFromName(nsid, name, md5);
 	}
@@ -53,6 +63,7 @@ namespace xcore
 	xuuid xuuid_generator::createFromName(const xuuid& nsid, const char* name, xdigest_engine& de)
 	{
 		ASSERT(de.length() == 16);
+		init();
 
 		xbyte uuid_buffer[16];
 		xuuid netNsid = nsid;
@@ -74,6 +85,8 @@ namespace xcore
 
 	xuuid xuuid_generator::createRandom()
 	{
+		init();
+
 		xbyte buffer[16];
 		xrandom_utils::randBuffer(_random, buffer, sizeof(buffer));
 		return xuuid_(buffer, xuuid::UUID_RANDOM);

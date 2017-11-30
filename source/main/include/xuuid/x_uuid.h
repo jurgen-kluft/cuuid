@@ -11,7 +11,7 @@
 
 namespace xcore
 {
-	struct xnode_t
+	struct xmac_t
 	{
 		enum ESize { SIZE = 6 };
 		u8		n8[SIZE];
@@ -126,7 +126,7 @@ namespace xcore
 		/// Returns the namespace identifier for the X500 namespace.
 
 	protected:
-						xuuid(u32 timeLow, u32 timeMid, u32 timeHiAndVersion, u16 clockSeq, xnode_t node);
+						xuuid(u32 timeLow, u32 timeMid, u32 timeHiAndVersion, u16 clockSeq, xmac_t mac);
 						xuuid(const xbyte* bytes, Version version);
 		
 		s32				compare(const xuuid& uuid) const;
@@ -145,7 +145,7 @@ namespace xcore
 		u16				_timeMid;
 		u16				_timeHiAndVersion;
 		u16				_clockSeq;
-		xnode_t			_node;
+		xmac_t			_mac;
 
 		friend class	xuuid_generator;
 	};

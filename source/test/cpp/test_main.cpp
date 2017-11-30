@@ -1,6 +1,7 @@
 #include "xbase/x_base.h"
 #include "xbase/x_allocator.h"
 #include "xbase/x_console.h"
+#include "xtime/x_time.h"
 
 #include "xunittest/xunittest.h"
 #include "xunittest/private/ut_ReportAssert.h"
@@ -93,6 +94,7 @@ bool gRunUnitTest(UnitTest::TestReporter& reporter)
 #endif
 
 	xbase::x_Init();
+	xtime::x_Init();
 
 #ifdef TARGET_DEBUG
 	xcore::x_asserthandler::sRegisterHandler(&gAssertHandler);
@@ -114,6 +116,7 @@ bool gRunUnitTest(UnitTest::TestReporter& reporter)
 
 	UnitTest::SetAllocator(NULL);
 
+	xtime::x_Exit();
 	xbase::x_Exit();
 	return r==0;
 }

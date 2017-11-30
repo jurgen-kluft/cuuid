@@ -54,18 +54,19 @@ namespace xcore
 		/// the xuuid generated.
 
 	protected:
+		void					init();
 		void					timeStamp(xdatetime& dt);
-		void					getNode();
 
 	private:
+		bool					_initialized;
 		xrng_good				_random;
 		xdatetime				_lastTime;
 		s32						_ticks;
-		xnode_t					_node;
-		bool					_haveNode;
+		xmac_t					_mac;
+		bool					_haveMac;
 
-		xuuid_generator(const xuuid_generator&);
-		xuuid_generator& operator = (const xuuid_generator&);
+								xuuid_generator(const xuuid_generator&);
+		xuuid_generator&		operator = (const xuuid_generator&) { return *this; }
 	};
 
 } // namespace xcore
