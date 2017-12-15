@@ -8,20 +8,11 @@
 //==============================================================================
 // INCLUDES
 //==============================================================================
+#include "xbase/x_buffer.h"
 
 namespace xcore
 {
-	struct xmac_t
-	{
-		enum ESize { SIZE = 6 };
-		u8		n8[SIZE];
-
-		void	clear()
-		{
-			for (s32 i = 0; i < SIZE; ++i)
-				n8[i] = 0;
-		}
-	};
+	XBUFFER(xmac_t, 6);
 
 	// A xuuid is an identifier that is unique across both space and time,
 	// with respect to the space of all UUIDs. Since a xuuid is a fixed
@@ -67,23 +58,23 @@ namespace xcore
 		void		swap(xuuid& uuid);
 		/// Swaps the xuuid with another one.	
 
-		bool		tryParse(const char* uuid);
+		bool		tryParse(xcchars const& uuid);
 		/// Tries to interpret the given string as an xuuid.
 		/// If the xuuid is syntactically valid, assigns the
 		/// members and returns true. Otherwise leaves the 
 		/// object unchanged and returns false.
 
-		void		toString(char* str, char* str_end) const;
+		void		toString(xchars& str) const;
 		/// Returns a string representation of the xuuid consisting
 		/// of groups of hexadecimal digits separated by hyphens.
 
-		void		copyFrom(const xbyte* buffer);
+		void		copyFrom(xcbuffer const& buffer);
 		/// Copies the xuuid (16 bytes) from a buffer or byte array.
 		/// The xuuid fields are expected to be
 		/// stored in network byte order.
 		/// The buffer need not be aligned.
 
-		void		copyTo(xbyte* buffer) const;
+		void		copyTo(xbuffer& buffer) const;
 		/// Copies the xuuid to the buffer. The fields
 		/// are in network byte order.
 		/// The buffer need not be aligned.
@@ -127,7 +118,7 @@ namespace xcore
 
 	protected:
 						xuuid(u32 timeLow, u32 timeMid, u32 timeHiAndVersion, u16 clockSeq, xmac_t mac);
-						xuuid(const xbyte* bytes, Version version);
+						xuuid(xcbuffer const& bytes, Version version);
 		
 		s32				compare(const xuuid& uuid) const;
 

@@ -12,7 +12,7 @@ namespace xcore
 		, _timeHiAndVersion(0)
 		, _clockSeq(0)
 	{
-		_mac.clear();
+		_mac.reset(0);
 	}
 
 	xuuid::xuuid(const xuuid& uuid)
@@ -39,7 +39,7 @@ namespace xcore
 		_mac = node;
 	}
 
-	xuuid::xuuid(const xbyte* bytes, Version version)
+	xuuid::xuuid(xcbuffer const & bytes, Version version)
 	{
 		copyFrom(bytes);
 
@@ -88,12 +88,12 @@ namespace xcore
 		swap_u16(_timeHiAndVersion, uuid._timeHiAndVersion);
 		swap_u16(_clockSeq, uuid._clockSeq);
 		for (s32 i=0; i<6; ++i)
-			swap_u8(_mac.n8[i], uuid._mac.n8[i]);
+			swap_u8(_mac[i], uuid._mac[i]);
 	}
 	
-	bool xuuid::tryParse(const char* uuid)
+	bool xuuid::tryParse(xcchars const& uuid)
 	{
-		s32 str_len = ascii::size(uuid);
+		s32 str_len = uuid.size();
 
 		if (str_len < 36)
 			return false;
@@ -101,7 +101,7 @@ namespace xcore
 		if (uuid[8] != '-'|| uuid[13] != '-' || uuid[18] != '-' || uuid[23] != '-')
 			return false;
 
-		char const* it = uuid;
+		uchar const* it = uuid.m_str;
 
 		_timeLow = 0;
 		for (s32 i = 0; i < 8; ++i)
@@ -124,85 +124,89 @@ namespace xcore
 
 		++it;
 		for (s32 i = 0; i < 6; ++i)
-			_mac.n8[i] = (nibble(*it++) << 4) | nibble(*it++) ;			
+			_mac[i] = (nibble(*it++) << 4) | nibble(*it++) ;			
 
 		return true;
 	}
 
 
-	void	xuuid::toString(char* str, char* str_end) const
+	void	xuuid::toString(xchars& str) const
 	{
-		ascii::sprintf(str, str_end, "%08X-%04X-%04X-%04X-", NULL, x_va(_timeLow), x_va(_timeMid), x_va(_timeHiAndVersion), x_va(_clockSeq));
-		ascii::sprintf(str, str_end, "%02X%02X%02X%02X%02X%02X", x_va(_mac.n8[0]), x_va(_mac.n8[1]), x_va(_mac.n8[2]), x_va(_mac.n8[3]), x_va(_mac.n8[4]), x_va(_mac.n8[5]));
+		if (str.size() >= 24)
+			ascii::sprintf(&str.m_str[0], str.m_eos, "%08X-%04X-%04X-%04X-", NULL, x_va(_timeLow), x_va(_timeMid), x_va(_timeHiAndVersion), x_va(_clockSeq));
+		if (str.size() >= 36)
+			ascii::sprintf(&str.m_str[24], str.m_eos, "%02X%02X%02X%02X%02X%02X", x_va(_mac[0]), x_va(_mac[1]), x_va(_mac[2]), x_va(_mac[3]), x_va(_mac[4]), x_va(_mac[5]));
 	}
 
-	inline xbyte const* from_bytes(xbyte const* b, u32& value)
+	inline u32	from_bytes(xcbuffer const& bytes, u32 i, u32& value)
 	{
-		u32 i;
-		xbyte* dst = (xbyte*)&i;
-		*dst++ = *b++;*dst++ = *b++;*dst++ = *b++;*dst++ = *b++;
-		value = i;
-		return b + 4;
+		u32 dst32;
+		xbyte* dst = (xbyte*)&dst32;
+		*dst++ = bytes[i++];
+		*dst++ = bytes[i++];
+		*dst++ = bytes[i++];
+		*dst++ = bytes[i++];
+		value = dst32;
+		return i;
 	}
 
-	inline xbyte const* from_bytes(xbyte const* b, u16& value)
+	inline u32	 from_bytes(xcbuffer const& bytes, u32 i, u16& value)
 	{
-		u16 i;
-		xbyte* dst = (xbyte*)&i;
-		*dst++ = *b++;*dst++ = *b++;
-		value = i;
-		return b + 2;
+		u16 dst16;
+		xbyte* dst = (xbyte*)&dst16;
+		*dst++ = bytes[i++];
+		*dst++ = bytes[i++];
+		value = dst16;
+		return i;
 	}
 
-	void xuuid::copyFrom(const xbyte* bytes)
+	void xuuid::copyFrom(xcbuffer const& bytes)
 	{
+		u32 idx = 0;
 		u32 i32;
-		bytes = from_bytes(bytes, i32);
+		idx = from_bytes(bytes, idx, i32);
 		_timeLow = x_NetworkEndian::swap(i32);
 		u16 i16;
-		bytes = from_bytes(bytes, i16);
+		idx = from_bytes(bytes, idx, i16);
 		_timeMid = x_NetworkEndian::swap(i16);
-		bytes = from_bytes(bytes, i16);
+		idx = from_bytes(bytes, idx, i16);
 		_timeHiAndVersion = x_NetworkEndian::swap(i16);
-		bytes = from_bytes(bytes, i16);
+		idx = from_bytes(bytes, idx, i16);
 		_clockSeq = x_NetworkEndian::swap(i16);
 
 		for (s32 i=0; i<6; ++i)
-			_mac.n8[i] = bytes[i];
+			_mac[i] = bytes[i];
 	}
 
-	inline xbyte* to_bytes(xbyte* b, u32 value)
+	inline u32	to_bytes(xbuffer& bytes, u32 idx, u32 value)
 	{
-		u32 i;
-		xbyte* dst = (xbyte*)&i;
-		*dst++ = *b++;*dst++ = *b++;*dst++ = *b++;*dst++ = *b++;
-		value = i;
-		return b + 4;
+		bytes[idx++] = (value >> 24) & 0xFF;
+		bytes[idx++] = (value >> 16) & 0xFF;
+		bytes[idx++] = (value >> 8) & 0xFF;
+		bytes[idx++] = (value >> 0) & 0xFF;
+		return idx;
 	}
 
-	inline xbyte* to_bytes(xbyte* b, u16 value)
+	inline u32	to_bytes(xbuffer& bytes, u32 idx, u16 value)
 	{
-		u16 i;
-		xbyte* dst = (xbyte*)&i;
-		*dst++ = *b++;*dst++ = *b++;
-		value = i;
-		return b + 2;
+		bytes[idx++] = (value >> 8) & 0xFF;
+		bytes[idx++] = (value >> 0) & 0xFF;
+		return idx;
 	}
 
-	void xuuid::copyTo(xbyte* bytes) const
+	void xuuid::copyTo(xbuffer& bytes) const
 	{
+		u32 idx = 0;
 		u32 i32 = x_NetworkEndian::swap(_timeLow);
-		bytes   = to_bytes(bytes, i32);
+		idx = to_bytes(bytes, idx, i32);
 		u32 i16 = x_NetworkEndian::swap(_timeMid);
-		bytes   = to_bytes(bytes, i16);
-		    i16 = x_NetworkEndian::swap(_timeHiAndVersion);
-		bytes   = to_bytes(bytes, i16);
-		    i16 = x_NetworkEndian::swap(_clockSeq);
-		bytes   = to_bytes(bytes, i16);
+		idx = to_bytes(bytes, idx, i16);
+		i16 = x_NetworkEndian::swap(_timeHiAndVersion);
+		idx = to_bytes(bytes, idx, i16);
+		i16 = x_NetworkEndian::swap(_clockSeq);
+		idx = to_bytes(bytes, idx, i16);
 
-		xbyte const* n = (xbyte const*)_mac.n8;
-		for (s32 i=0; i<xmac_t::SIZE; ++i)
-			bytes[i] = n[i];
+		bytes.write_at(idx, _mac.cbuffer());
 	}
 
 	s32 xuuid::variant() const
@@ -223,13 +227,7 @@ namespace xcore
 		if (_timeMid != uuid._timeMid) return _timeMid < uuid._timeMid ? -1 : 1;
 		if (_timeHiAndVersion != uuid._timeHiAndVersion) return _timeHiAndVersion < uuid._timeHiAndVersion ? -1 : 1;
 		if (_clockSeq != uuid._clockSeq) return _clockSeq < uuid._clockSeq ? -1 : 1;
-		for (s32 i = 0; i < xmac_t::SIZE; ++i)
-		{
-			if (_mac.n8[i] < uuid._mac.n8[i])
-				return -1;
-			else if (_mac.n8[i] > uuid._mac.n8[i])
-				return 1;	
-		}
+		if (_mac != uuid._mac) return _mac < uuid._mac ? -1 : 1;
 		return 0;
 	}
 

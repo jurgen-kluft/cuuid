@@ -9,7 +9,7 @@ namespace xcore
 	class xuuid_ : public xuuid
 	{
 	public:
-		xuuid_(const xbyte* bytes, Version version)
+		xuuid_(xcbuffer const& bytes, Version version)
 			: xuuid(bytes, version)
 		{
 		}
@@ -65,17 +65,17 @@ namespace xcore
 		ASSERT(de.length() == 16);
 		init();
 
-		xbyte uuid_buffer[16];
+		xbuffer16 uuid_buffer;
 		xuuid netNsid = nsid;
-		netNsid.copyTo(uuid_buffer);
+		netNsid.copyTo(uuid_buffer.buffer());
 
-		xbyte digest[16];
+		xbuffer16 digest;
 		de.reset();
-		de.update(&uuid_buffer[ 0], 4);
-		de.update(&uuid_buffer[ 4], 2);
-		de.update(&uuid_buffer[ 6], 2);
-		de.update(&uuid_buffer[ 8], 2);
-		de.update(&uuid_buffer[10], 6);
+		de.update(&uuid_buffer.m_data[ 0], 4);
+		de.update(&uuid_buffer.m_data[ 4], 2);
+		de.update(&uuid_buffer.m_data[ 6], 2);
+		de.update(&uuid_buffer.m_data[ 8], 2);
+		de.update(&uuid_buffer.m_data[10], 6);
 		de.update(name, ascii::size(name));
 		de.digest(digest);
 
