@@ -91,7 +91,7 @@ namespace xcore
 			swap_u8(_mac[i], uuid._mac[i]);
 	}
 	
-	bool xuuid::tryParse(xcchars const& uuid)
+	bool xuuid::tryParse(xcuchars const& uuid)
 	{
 		s32 str_len = uuid.size();
 
@@ -123,19 +123,27 @@ namespace xcore
 			_clockSeq = (_clockSeq << 4) | nibble(*it++);
 
 		++it;
-		for (s32 i = 0; i < 6; ++i)
-			_mac[i] = (nibble(*it++) << 4) | nibble(*it++) ;			
+		for (s32 i = 0; i < 6; ++i) {
+			_mac[i] = (nibble(it[0]) << 4) | nibble(it[1]);
+			it += 2;
+		}
 
 		return true;
 	}
 
 
-	void	xuuid::toString(xchars& str) const
+	void	xuuid::toString(xuchars& str) const
 	{
-		if (str.size() >= 24)
-			ascii::sprintf(&str.m_str[0], str.m_eos, "%08X-%04X-%04X-%04X-", NULL, x_va(_timeLow), x_va(_timeMid), x_va(_timeHiAndVersion), x_va(_clockSeq));
-		if (str.size() >= 36)
-			ascii::sprintf(&str.m_str[24], str.m_eos, "%02X%02X%02X%02X%02X%02X", x_va(_mac[0]), x_va(_mac[1]), x_va(_mac[2]), x_va(_mac[3]), x_va(_mac[4]), x_va(_mac[5]));
+		if (str.cap() >= 24)
+		{
+			xcuchars format("%08X-%04X-%04X-%04X-");
+			ascii::sprintf(str, format, x_va(_timeLow), x_va(_timeMid), x_va(_timeHiAndVersion), x_va(_clockSeq));
+		}
+		if (str.cap() >= (24 + 36))
+		{
+			xcuchars format("%02X%02X%02X%02X%02X%02X");
+			ascii::sprintf(str, format, x_va(_mac[0]), x_va(_mac[1]), x_va(_mac[2]), x_va(_mac[3]), x_va(_mac[4]), x_va(_mac[5]));
+		}
 	}
 
 	inline u32	from_bytes(xcbuffer const& bytes, u32 i, u32& value)

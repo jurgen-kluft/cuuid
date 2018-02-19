@@ -9,10 +9,11 @@
 // INCLUDES
 //==============================================================================
 #include "xbase/x_buffer.h"
+#include "xbase/x_chars.h"
 
 namespace xcore
 {
-	XBUFFER(xmac_t, 6);
+	XBYTES(xmac_t, 6);
 
 	// A xuuid is an identifier that is unique across both space and time,
 	// with respect to the space of all UUIDs. Since a xuuid is a fixed
@@ -58,13 +59,13 @@ namespace xcore
 		void		swap(xuuid& uuid);
 		/// Swaps the xuuid with another one.	
 
-		bool		tryParse(xcchars const& uuid);
+		bool		tryParse(xcuchars const& uuid);
 		/// Tries to interpret the given string as an xuuid.
 		/// If the xuuid is syntactically valid, assigns the
 		/// members and returns true. Otherwise leaves the 
 		/// object unchanged and returns false.
 
-		void		toString(xchars& str) const;
+		void		toString(xuchars& str) const;
 		/// Returns a string representation of the xuuid consisting
 		/// of groups of hexadecimal digits separated by hyphens.
 
