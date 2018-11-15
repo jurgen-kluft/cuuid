@@ -25,7 +25,7 @@ namespace xcore
 	xuuid_generator::~xuuid_generator()
 	{
 	}
-
+	 
 	void xuuid_generator::init()
 	{
 		_random.reset();
@@ -52,7 +52,7 @@ namespace xcore
 		return xuuid(timeLow, timeMid, timeHiAndVersion, clockSeq, _mac);
 	}
 
-	xuuid xuuid_generator::createFromName(const xuuid& nsid, const char* name)
+	xuuid xuuid_generator::createFromName(const xuuid& nsid, const xcuchars& name)
 	{
 		init();
 
@@ -60,7 +60,7 @@ namespace xcore
 		return createFromName(nsid, name, md5);
 	}
 
-	xuuid xuuid_generator::createFromName(const xuuid& nsid, const char* name, xdigest_engine& de)
+	xuuid xuuid_generator::createFromName(const xuuid& nsid, const xcuchars& name, xdigest_engine& de)
 	{
 		ASSERT(de.length() == 16);
 		init();
@@ -82,8 +82,7 @@ namespace xcore
 		de.update(uuid_cbuffer( 6, 2));
 		de.update(uuid_cbuffer( 8, 2));
 		de.update(uuid_cbuffer(10, 6));
-		xcuchars cname(name);
-		de.update(cname.buffer());
+		de.update(name.buffer());
 		de.digest(buffer);
 
 		return xuuid_(cbuffer, xuuid::UUID_NAME_BASED);
