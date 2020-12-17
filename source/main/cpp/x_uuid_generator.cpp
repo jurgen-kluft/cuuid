@@ -9,7 +9,7 @@ namespace xcore
 	class xuuid_ : public xuuid
 	{
 	public:
-		xuuid_(xcbuffer const& bytes, Version version)
+		xuuid_(cbuffer_t const& bytes, Version version)
 			: xuuid(bytes, version)
 		{
 		}
@@ -41,7 +41,7 @@ namespace xcore
 	{
 		init();
 
-		xdatetime dt;
+		datetime_t dt;
 		timeStamp(dt);
 
 		u64 tv = dt.toBinary();
@@ -52,7 +52,7 @@ namespace xcore
 		return xuuid(timeLow, timeMid, timeHiAndVersion, clockSeq, _mac);
 	}
 
-	xuuid xuuid_generator::createFromName(const xuuid& nsid, const xcuchars& name)
+	xuuid xuuid_generator::createFromName(const xuuid& nsid, const crunes_t& name)
 	{
 		init();
 
@@ -60,21 +60,21 @@ namespace xcore
 		return createFromName(nsid, name, md5);
 	}
 
-	xuuid xuuid_generator::createFromName(const xuuid& nsid, const xcuchars& name, xdigest_engine& de)
+	xuuid xuuid_generator::createFromName(const xuuid& nsid, const crunes_t& name, xdigest_engine& de)
 	{
 		ASSERT(de.length() == 16);
 		init();
 
 		xbytes16 uuid_buffer16;
-		xbuffer uuid_buffer = uuid_buffer16.buffer();
+		buffer_t uuid_buffer = uuid_buffer16.buffer();
 
 		xuuid netNsid = nsid;
 		netNsid.copyTo(uuid_buffer);
-		xcbuffer uuid_cbuffer = uuid_buffer.cbuffer();
+		cbuffer_t uuid_cbuffer = uuid_buffer.cbuffer();
 
 		xbytes16 digest;
-		xbuffer buffer = digest.buffer();
-		xcbuffer cbuffer = digest.cbuffer();
+		buffer_t buffer = digest.buffer();
+		cbuffer_t cbuffer = digest.cbuffer();
 
 		de.reset();
 		de.update(uuid_cbuffer( 0, 4));
@@ -94,16 +94,16 @@ namespace xcore
 		init();
 
 		xbytes16 buffer16;
-		xbuffer buffer = buffer16.buffer();
-		xcbuffer cbuffer = buffer16.cbuffer();
+		buffer_t buffer = buffer16.buffer();
+		cbuffer_t cbuffer = buffer16.cbuffer();
 		_random.randBuffer(buffer);
 		return xuuid_(cbuffer, xuuid::UUID_RANDOM);
 	}
 
 
-	void xuuid_generator::timeStamp(xdatetime& dt)
+	void xuuid_generator::timeStamp(datetime_t& dt)
 	{
-		xdatetime now = xdatetime::sNow();
+		datetime_t now = datetime_t::sNow();
 		for (;;)
 		{
 			if (now != _lastTime)
@@ -117,10 +117,10 @@ namespace xcore
 				++_ticks;
 				break;
 			}
-			now = xdatetime::sNow();
+			now = datetime_t::sNow();
 		}
-		u64 tv = xdatetime::sNow().toBinary() + _ticks;
-		dt = xdatetime(tv);
+		u64 tv = datetime_t::sNow().toBinary() + _ticks;
+		dt = datetime_t(tv);
 	}
 
 

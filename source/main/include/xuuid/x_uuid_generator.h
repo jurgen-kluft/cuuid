@@ -11,8 +11,8 @@
 #include "xbase/x_chars.h"
 #include "xuuid/x_uuid.h"
 #include "xtime/x_datetime.h"
-#include "xrandom/x_random.h"
-#include "xrandom/x_random_good.h"
+#include "random_t/x_random.h"
+#include "random_t/x_random_good.h"
 
 namespace xcore
 {
@@ -37,10 +37,10 @@ namespace xcore
 		/// Creates a new time-based xuuid, using the MAC address of
 		/// one of the system's ethernet adapters.
 
-		xuuid					createFromName(const xuuid& nsid, const xcuchars& name);
+		xuuid					createFromName(const xuuid& nsid, const crunes_t& name);
 		/// Creates a name-based xuuid.
 
-		xuuid					createFromName(const xuuid& nsid, const xcuchars& name, xdigest_engine& de);
+		xuuid					createFromName(const xuuid& nsid, const crunes_t& name, xdigest_engine& de);
 		/// Creates a name-based xuuid, using the given digest engine.
 
 		xuuid					createRandom();
@@ -56,13 +56,13 @@ namespace xcore
 
 	protected:
 		void					init();
-		void					timeStamp(xdatetime& dt);
+		void					timeStamp(datetime_t& dt);
 
 	private:
 		bool					_initialized;
 		bool					_haveMac;
 		xrng_good				_random;
-		xdatetime				_lastTime;
+		datetime_t				_lastTime;
 		s32						_ticks;
 		xmac_t					_mac;
 

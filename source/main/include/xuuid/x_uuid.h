@@ -59,23 +59,23 @@ namespace xcore
 		void		swap(xuuid& uuid);
 		/// Swaps the xuuid with another one.	
 
-		bool		tryParse(xcuchars const& uuid);
+		bool		tryParse(crunes_t const& uuid);
 		/// Tries to interpret the given string as an xuuid.
 		/// If the xuuid is syntactically valid, assigns the
 		/// members and returns true. Otherwise leaves the 
 		/// object unchanged and returns false.
 
-		void		toString(xuchars& str) const;
+		void		toString(runes_t& str) const;
 		/// Returns a string representation of the xuuid consisting
 		/// of groups of hexadecimal digits separated by hyphens.
 
-		void		copyFrom(xcbuffer const& buffer);
+		void		copyFrom(cbuffer_t const& buffer);
 		/// Copies the xuuid (16 bytes) from a buffer or byte array.
 		/// The xuuid fields are expected to be
 		/// stored in network byte order.
 		/// The buffer need not be aligned.
 
-		void		copyTo(xbuffer& buffer) const;
+		void		copyTo(buffer_t& buffer) const;
 		/// Copies the xuuid to the buffer. The fields
 		/// are in network byte order.
 		/// The buffer need not be aligned.
@@ -119,7 +119,7 @@ namespace xcore
 
 	protected:
 						xuuid(u32 timeLow, u32 timeMid, u32 timeHiAndVersion, u16 clockSeq, xmac_t mac);
-						xuuid(xcbuffer const& bytes, Version version);
+						xuuid(cbuffer_t const& bytes, Version version);
 		
 		s32				compare(const xuuid& uuid) const;
 
