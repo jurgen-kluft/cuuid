@@ -1,5 +1,5 @@
 #include "xuuid/x_uuid.h"
-#include "xbase/va_list_t.h"
+#include "xbase/x_va_list.h"
 #include "xbase/x_memory_std.h"
 #include "xbase/x_string_ascii.h"
 #include "xbase/x_endian.h"
