@@ -11,8 +11,8 @@
 #include "xbase/x_chars.h"
 #include "xuuid/x_uuid.h"
 #include "xtime/x_datetime.h"
-#include "random_t/x_random.h"
-#include "random_t/x_random_good.h"
+#include "xrandom/x_random.h"
+#include "xrandom/x_random_good.h"
 
 namespace xcore
 {
