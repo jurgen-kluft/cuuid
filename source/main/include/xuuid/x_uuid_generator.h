@@ -8,7 +8,7 @@
 //==============================================================================
 // INCLUDES
 //==============================================================================
-#include "xbase/x_chars.h"
+#include "xbase/x_runes.h"
 #include "xuuid/x_uuid.h"
 #include "xtime/x_datetime.h"
 #include "xrandom/x_random.h"

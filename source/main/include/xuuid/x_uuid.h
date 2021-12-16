@@ -5,15 +5,15 @@
 #pragma once 
 #endif
 
-//==============================================================================
-// INCLUDES
-//==============================================================================
 #include "xbase/x_buffer.h"
-#include "xbase/x_chars.h"
+#include "xbase/x_runes.h"
 
 namespace xcore
 {
-	XBYTES(xmac_t, 6);
+	struct xmac_t
+	{
+		xbyte m_data[6];
+	};
 
 	// A xuuid is an identifier that is unique across both space and time,
 	// with respect to the space of all UUIDs. Since a xuuid is a fixed
