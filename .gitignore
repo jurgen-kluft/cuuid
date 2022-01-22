@@ -1,9 +1,14 @@
 #ignore all files
-*.*
+*
+!*/
+
 vendor/
 
 #except the following files
+!.gitignore
+!.clang-format
 !*.go
+!*.lua
 !*.cpp
 !*.hpp
 !*.c
