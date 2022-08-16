@@ -14,7 +14,7 @@
 #include "xrandom/x_random.h"
 #include "xrandom/x_random_good.h"
 
-namespace xcore
+namespace ncore
 {
 	class xdigest_engine;
 
@@ -70,7 +70,7 @@ namespace xcore
 		xuuid_generator&		operator = (const xuuid_generator&) { return *this; }
 	};
 
-} // namespace xcore
+} // namespace ncore
 
 
 #endif // __XUUID_UUID_GENERATOR_H__

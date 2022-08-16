@@ -8,11 +8,11 @@
 #include "xbase/x_buffer.h"
 #include "xbase/x_runes.h"
 
-namespace xcore
+namespace ncore
 {
 	struct xmac_t
 	{
-		xbyte m_data[6];
+		u8 m_data[6];
 	};
 
 	// A xuuid is an identifier that is unique across both space and time,
@@ -200,7 +200,7 @@ namespace xcore
 	}
 
 
-} // namespace xcore
+} // namespace ncore
 
 
 #endif // __XUUID_UUID_H__

@@ -4,7 +4,7 @@
 #include "xhash/x_md5.h"
 
 
-namespace xcore
+namespace ncore
 {
 	class xuuid_ : public xuuid
 	{
@@ -65,14 +65,14 @@ namespace xcore
 		ASSERT(de.length() == 16);
 		init();
 
-		xbytes16 uuid_buffer16;
+		u8s16 uuid_buffer16;
 		buffer_t uuid_buffer = uuid_buffer16.buffer();
 
 		xuuid netNsid = nsid;
 		netNsid.copyTo(uuid_buffer);
 		cbuffer_t uuid_cbuffer = uuid_buffer.cbuffer();
 
-		xbytes16 digest;
+		u8s16 digest;
 		buffer_t buffer = digest.buffer();
 		cbuffer_t cbuffer = digest.cbuffer();
 
@@ -93,7 +93,7 @@ namespace xcore
 	{
 		init();
 
-		xbytes16 buffer16;
+		u8s16 buffer16;
 		buffer_t buffer = buffer16.buffer();
 		cbuffer_t cbuffer = buffer16.cbuffer();
 		_random.randBuffer(buffer);
@@ -130,4 +130,4 @@ namespace xcore
 	}
 
 
-} // namespace xcore
+} // namespace ncore

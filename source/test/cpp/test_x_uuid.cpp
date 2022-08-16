@@ -2,7 +2,7 @@
 #include "xuuid/x_uuid_generator.h"
 #include "xunittest/xunittest.h"
 
-using namespace xcore;
+using namespace ncore;
 
 UNITTEST_SUITE_BEGIN(xuuid)
 {

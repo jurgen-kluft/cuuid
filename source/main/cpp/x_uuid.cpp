@@ -4,7 +4,7 @@
 #include "xbase/x_string_ascii.h"
 #include "xbase/x_endian.h"
 
-namespace xcore
+namespace ncore
 {
 	xuuid::xuuid()
 		: _timeLow(0)
@@ -149,7 +149,7 @@ namespace xcore
 	inline u32	from_bytes(cbuffer_t const& bytes, u32 i, u32& value)
 	{
 		u32 dst32;
-		xbyte* dst = (xbyte*)&dst32;
+		u8* dst = (u8*)&dst32;
 		*dst++ = bytes[i++];
 		*dst++ = bytes[i++];
 		*dst++ = bytes[i++];
@@ -161,7 +161,7 @@ namespace xcore
 	inline u32	 from_bytes(cbuffer_t const& bytes, u32 i, u16& value)
 	{
 		u16 dst16;
-		xbyte* dst = (xbyte*)&dst16;
+		u8* dst = (u8*)&dst16;
 		*dst++ = bytes[i++];
 		*dst++ = bytes[i++];
 		value = dst16;
