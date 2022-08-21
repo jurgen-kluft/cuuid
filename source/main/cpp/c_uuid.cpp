@@ -1,8 +1,8 @@
-#include "xuuid/x_uuid.h"
-#include "cbase/x_va_list.h"
-#include "cbase/x_memory_std.h"
-#include "cbase/x_string_ascii.h"
-#include "cbase/x_endian.h"
+#include "cuuid/c_uuid.h"
+#include "cbase/c_va_list.h"
+#include "cbase/c_memory_std.h"
+#include "cbase/c_string_ascii.h"
+#include "cbase/c_endian.h"
 
 namespace ncore
 {

@@ -1,7 +1,7 @@
-#include "cbase/x_debug.h"
-#include "cbase/x_runes.h"
-#include "xuuid/x_uuid_generator.h"
-#include "xhash/x_md5.h"
+#include "cbase/c_debug.h"
+#include "cbase/c_runes.h"
+#include "cuuid/c_uuid_generator.h"
+#include "chash/c_md5.h"
 
 
 namespace ncore
@@ -15,18 +15,18 @@ namespace ncore
 		}
 	};
 
-	xuuid_generator::xuuid_generator()
+	uuid_generator::uuid_generator()
 		: _initialized(false)
 		, _ticks(0)
 		, _haveMac(false)
 	{
 	}
 
-	xuuid_generator::~xuuid_generator()
+	uuid_generator::~uuid_generator()
 	{
 	}
 	 
-	void xuuid_generator::init()
+	void uuid_generator::init()
 	{
 		_random.reset();
 		if (!_haveMac)
@@ -37,7 +37,7 @@ namespace ncore
 		}
 	}
 
-	xuuid xuuid_generator::create()
+	xuuid uuid_generator::create()
 	{
 		init();
 
@@ -52,7 +52,7 @@ namespace ncore
 		return xuuid(timeLow, timeMid, timeHiAndVersion, clockSeq, _mac);
 	}
 
-	xuuid xuuid_generator::createFromName(const xuuid& nsid, const crunes_t& name)
+	xuuid uuid_generator::createFromName(const xuuid& nsid, const crunes_t& name)
 	{
 		init();
 
@@ -60,7 +60,7 @@ namespace ncore
 		return createFromName(nsid, name, md5);
 	}
 
-	xuuid xuuid_generator::createFromName(const xuuid& nsid, const crunes_t& name, xdigest_engine& de)
+	xuuid uuid_generator::createFromName(const xuuid& nsid, const crunes_t& name, xdigest_engine& de)
 	{
 		ASSERT(de.length() == 16);
 		init();
@@ -89,7 +89,7 @@ namespace ncore
 	}
 
 
-	xuuid xuuid_generator::createRandom()
+	xuuid uuid_generator::createRandom()
 	{
 		init();
 
@@ -101,7 +101,7 @@ namespace ncore
 	}
 
 
-	void xuuid_generator::timeStamp(datetime_t& dt)
+	void uuid_generator::timeStamp(datetime_t& dt)
 	{
 		datetime_t now = datetime_t::sNow();
 		for (;;)
@@ -124,7 +124,7 @@ namespace ncore
 	}
 
 
-	xuuid xuuid_generator::createOne()
+	xuuid uuid_generator::createOne()
 	{
 		return create();
 	}

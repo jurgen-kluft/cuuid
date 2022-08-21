@@ -1,12 +1,12 @@
-#include "cbase/x_base.h"
-#include "cbase/x_allocator.h"
-#include "cbase/x_console.h"
-#include "cbase/x_context.h"
+#include "cbase/c_base.h"
+#include "cbase/c_allocator.h"
+#include "cbase/c_console.h"
+#include "cbase/c_context.h"
 
-#include "xtime/x_time.h"
+#include "ctime/c_time.h"
 
-#include "xunittest/xunittest.h"
-#include "xunittest/private/ut_ReportAssert.h"
+#include "cunittest/xunittest.h"
+#include "cunittest/private/ut_ReportAssert.h"
 
 UNITTEST_SUITE_LIST(xCoreUnitTest);
 
@@ -45,21 +45,19 @@ namespace ncore
 		virtual void	Deallocate(void* ptr)								{ mAllocator->deallocate(ptr); }
 	};
 
-	class TestAllocator : public x_iallocator
+	class TestAllocator : public alloc_t
 	{
 		x_iallocator*		mAllocator;
 	public:
 							TestAllocator(x_iallocator* allocator) : mAllocator(allocator) { }
 
-		virtual const char*	name() const										{ return "xbase unittest test heap allocator"; }
-
-		virtual void*		allocate(uint_t size, u32 alignment)
+		virtual void*		v_allocate(uint_t size, u32 alignment)
 		{
 			UnitTest::IncNumAllocations();
 			return mAllocator->allocate(size, alignment);
 		}
 
-		virtual void*		reallocate(void* mem, uint_t size, u32 alignment)
+		virtual void*		v_reallocate(void* mem, uint_t size, u32 alignment)
 		{
 			if (mem==nullptr)
 				return allocate(size, alignment);
@@ -67,7 +65,7 @@ namespace ncore
 				return mAllocator->reallocate(mem, size, alignment);
 		}
 
-		virtual void		deallocate(void* mem)
+		virtual void		v_deallocate(void* mem)
 		{
 			UnitTest::DecNumAllocations();
 			mAllocator->deallocate(mem);

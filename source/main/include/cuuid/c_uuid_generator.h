@@ -1,37 +1,32 @@
-#ifndef __XUUID_UUID_GENERATOR_H__
-#define __XUUID_UUID_GENERATOR_H__
-#include "cbase/x_target.h"
+#ifndef __CUUID_UUID_GENERATOR_H__
+#define __CUUID_UUID_GENERATOR_H__
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-//==============================================================================
-// INCLUDES
-//==============================================================================
-#include "cbase/x_runes.h"
-#include "xuuid/x_uuid.h"
-#include "xtime/x_datetime.h"
-#include "xrandom/x_random.h"
-#include "xrandom/x_random_good.h"
+#include "cbase/c_runes.h"
+#include "cuuid/c_uuid.h"
+#include "ctime/c_datetime.h"
+#include "crandom/c_random.h"
+#include "crandom/c_random_good.h"
 
 namespace ncore
 {
-	class xdigest_engine;
-
 	// This class implements a generator for Universal Unique Identifiers,
 	// as specified in Appendix A of the DCE 1.1 Remote Procedure
 	// Call Specification (http://www.opengroup.org/onlinepubs/9629399/),
 	// RFC 2518 (WebDAV), section 6.4.1 and the UUIDs and GUIDs internet
 	// draft by Leach/Salz from February, 1998 
 	// (http://ftp.ics.uci.edu/pub/ietf/webdav/uuid-guid/draft-leach-uuids-guids-01.txt)
-	class xuuid_generator
+	class uuid_generator
 	{
 	public:
-								xuuid_generator();
-								/// Creates the xuuid_generator.
+								uuid_generator();
+								/// Creates the uuid_generator.
 
-								~xuuid_generator();
-								/// Destroys the xuuid_generator.
+								~uuid_generator();
+								/// Destroys the uuid_generator.
 
 		xuuid					create();
 		/// Creates a new time-based xuuid, using the MAC address of
@@ -61,16 +56,16 @@ namespace ncore
 	private:
 		bool					_initialized;
 		bool					_haveMac;
-		xrng_good				_random;
+		nrnd::good_t			_random;
 		datetime_t				_lastTime;
 		s32						_ticks;
 		xmac_t					_mac;
 
-								xuuid_generator(const xuuid_generator&);
-		xuuid_generator&		operator = (const xuuid_generator&) { return *this; }
+								uuid_generator(const uuid_generator&);
+		uuid_generator&		operator = (const uuid_generator&) { return *this; }
 	};
 
 } // namespace ncore
 
 
-#endif // __XUUID_UUID_GENERATOR_H__
+#endif // __CUUID_UUID_GENERATOR_H__

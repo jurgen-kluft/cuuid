@@ -1,12 +1,12 @@
-#ifndef __XUUID_UUID_H__
-#define __XUUID_UUID_H__
-#include "cbase/x_target.h"
+#ifndef __CUUID_UUID_H__
+#define __CUUID_UUID_H__
+#include "cbase/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "cbase/x_buffer.h"
-#include "cbase/x_runes.h"
+#include "cbase/c_buffer.h"
+#include "cbase/c_runes.h"
 
 namespace ncore
 {
@@ -139,7 +139,7 @@ namespace ncore
 		u16				_clockSeq;
 		xmac_t			_mac;
 
-		friend class	xuuid_generator;
+		friend class	uuid_generator;
 	};
 
 
@@ -203,4 +203,4 @@ namespace ncore
 } // namespace ncore
 
 
-#endif // __XUUID_UUID_H__
+#endif // __CUUID_UUID_H__
