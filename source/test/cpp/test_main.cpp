@@ -1,7 +1,7 @@
-#include "xbase/x_base.h"
-#include "xbase/x_allocator.h"
-#include "xbase/x_console.h"
-#include "xbase/x_context.h"
+#include "cbase/x_base.h"
+#include "cbase/x_allocator.h"
+#include "cbase/x_console.h"
+#include "cbase/x_context.h"
 
 #include "xtime/x_time.h"
 
@@ -85,7 +85,7 @@ ncore::UnitTestAssertHandler gAssertHandler;
 
 bool gRunUnitTest(UnitTest::TestReporter& reporter)
 {
-	xbase::init();
+	cbase::init();
 
 #ifdef TARGET_DEBUG
 	ncore::context_t::set_assert_handler(&gAssertHandler);
@@ -115,7 +115,7 @@ bool gRunUnitTest(UnitTest::TestReporter& reporter)
 	UnitTest::SetAllocator(nullptr);
 	ncore::context_t::set_system_alloc(systemAllocator);
 
-	xbase::exit();
+	cbase::exit();
 	return r==0;
 }
 

@@ -1,49 +1,49 @@
-package xuuid
+package cuuid
 
 import (
-	"github.com/jurgen-kluft/xbase/package"
-	"github.com/jurgen-kluft/xtime/package"
-	"github.com/jurgen-kluft/xhash/package"
-	"github.com/jurgen-kluft/xrandom/package"
-	"github.com/jurgen-kluft/xcode/denv"
-	"github.com/jurgen-kluft/xentry/package"
-	"github.com/jurgen-kluft/xunittest/package"
+	cbase "github.com/jurgen-kluft/cbase/package"
+	"github.com/jurgen-kluft/ccode/denv"
+	centry "github.com/jurgen-kluft/centry/package"
+	chash "github.com/jurgen-kluft/chash/package"
+	crandom "github.com/jurgen-kluft/crandom/package"
+	ctime "github.com/jurgen-kluft/ctime/package"
+	cunittest "github.com/jurgen-kluft/cunittest/package"
 )
 
-// GetPackage returns the package object of 'xuuid'
+// GetPackage returns the package object of 'cuuid'
 func GetPackage() *denv.Package {
 	// Dependencies
-	xunittestpkg := xunittest.GetPackage()
-	xentrypkg := xentry.GetPackage()
-	xbasepkg := xbase.GetPackage()
-	xtimepkg := xtime.GetPackage()
-	xhashpkg := xhash.GetPackage()
-	xrandompkg := xrandom.GetPackage()
+	cunittestpkg := cunittest.GetPackage()
+	centrypkg := centry.GetPackage()
+	cbasepkg := cbase.GetPackage()
+	ctimepkg := ctime.GetPackage()
+	chashpkg := chash.GetPackage()
+	crandompkg := crandom.GetPackage()
 
-	// The main (xuuid) package
-	mainpkg := denv.NewPackage("xuuid")
-	mainpkg.AddPackage(xunittestpkg)
-	mainpkg.AddPackage(xentrypkg)
-	mainpkg.AddPackage(xbasepkg)
-	mainpkg.AddPackage(xtimepkg)
-	mainpkg.AddPackage(xhashpkg)
-	mainpkg.AddPackage(xrandompkg)
+	// The main (cuuid) package
+	mainpkg := denv.NewPackage("cuuid")
+	mainpkg.AddPackage(cunittestpkg)
+	mainpkg.AddPackage(centrypkg)
+	mainpkg.AddPackage(cbasepkg)
+	mainpkg.AddPackage(ctimepkg)
+	mainpkg.AddPackage(chashpkg)
+	mainpkg.AddPackage(crandompkg)
 
-	// 'xuuid' library
-	mainlib := denv.SetupDefaultCppLibProject("xuuid", "github.com\\jurgen-kluft\\xuuid")
-	mainlib.Dependencies = append(mainlib.Dependencies, xbasepkg.GetMainLib())
-	mainlib.Dependencies = append(mainlib.Dependencies, xtimepkg.GetMainLib())
-	mainlib.Dependencies = append(mainlib.Dependencies, xhashpkg.GetMainLib())
-	mainlib.Dependencies = append(mainlib.Dependencies, xrandompkg.GetMainLib())
+	// 'cuuid' library
+	mainlib := denv.SetupDefaultCppLibProject("cuuid", "github.com\\jurgen-kluft\\cuuid")
+	mainlib.Dependencies = append(mainlib.Dependencies, cbasepkg.GetMainLib())
+	mainlib.Dependencies = append(mainlib.Dependencies, ctimepkg.GetMainLib())
+	mainlib.Dependencies = append(mainlib.Dependencies, chashpkg.GetMainLib())
+	mainlib.Dependencies = append(mainlib.Dependencies, crandompkg.GetMainLib())
 
-	// 'xuuid' unittest project
-	maintest := denv.SetupDefaultCppTestProject("xuuid_test", "github.com\\jurgen-kluft\\xuuid")
-	maintest.Dependencies = append(maintest.Dependencies, xunittestpkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, xentrypkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, xbasepkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, xtimepkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, xhashpkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, xrandompkg.GetMainLib())
+	// 'cuuid' unittest project
+	maintest := denv.SetupDefaultCppTestProject("cuuid_test", "github.com\\jurgen-kluft\\cuuid")
+	maintest.Dependencies = append(maintest.Dependencies, cunittestpkg.GetMainLib())
+	maintest.Dependencies = append(maintest.Dependencies, centrypkg.GetMainLib())
+	maintest.Dependencies = append(maintest.Dependencies, cbasepkg.GetMainLib())
+	maintest.Dependencies = append(maintest.Dependencies, ctimepkg.GetMainLib())
+	maintest.Dependencies = append(maintest.Dependencies, chashpkg.GetMainLib())
+	maintest.Dependencies = append(maintest.Dependencies, crandompkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, mainlib)
 
 	mainpkg.AddMainLib(mainlib)

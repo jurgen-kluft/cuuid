@@ -1,5 +1,5 @@
-#include "xbase/x_debug.h"
-#include "xbase/x_runes.h"
+#include "cbase/x_debug.h"
+#include "cbase/x_runes.h"
 #include "xuuid/x_uuid_generator.h"
 #include "xhash/x_md5.h"
 

@@ -1,12 +1,12 @@
 #ifndef __XUUID_UUID_H__
 #define __XUUID_UUID_H__
-#include "xbase/x_target.h"
+#include "cbase/x_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
 
-#include "xbase/x_buffer.h"
-#include "xbase/x_runes.h"
+#include "cbase/x_buffer.h"
+#include "cbase/x_runes.h"
 
 namespace ncore
 {
