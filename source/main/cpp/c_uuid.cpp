@@ -1,4 +1,4 @@
-#include "xuuid/x_uuid.h"
+#include "cuuid/c_uuid.h"
 #include "cbase/c_va_list.h"
 #include "cbase/c_memory_std.h"
 #include "cbase/c_string_ascii.h"
@@ -39,7 +39,7 @@ namespace ncore
 		_mac = node;
 	}
 
-	xuuid::xuuid(xcbuffer const & bytes, Version version)
+	xuuid::xuuid(cbuffer_t const & bytes, Version version)
 	{
 		copyFrom(bytes);
 
@@ -91,7 +91,7 @@ namespace ncore
 			swap_u8(_mac[i], uuid._mac[i]);
 	}
 	
-	bool xuuid::tryParse(xcuchars const& uuid)
+	bool xuuid::tryParse(crunes_t const& uuid)
 	{
 		s32 str_len = uuid.size();
 
@@ -132,24 +132,24 @@ namespace ncore
 	}
 
 
-	void	xuuid::toString(xuchars& str) const
+	void	xuuid::toString(runes_t& str) const
 	{
 		if (str.cap() >= 24)
 		{
-			xcuchars format("%08X-%04X-%04X-%04X-");
-			ascii::sprintf(str, format, x_va(_timeLow), x_va(_timeMid), x_va(_timeHiAndVersion), x_va(_clockSeq));
+			crunes_t format("%08X-%04X-%04X-%04X-");
+			ascii::sprintf(str, format, va_t(_timeLow), va_t(_timeMid), va_t(_timeHiAndVersion), va_t(_clockSeq));
 		}
 		if (str.cap() >= (24 + 36))
 		{
-			xcuchars format("%02X%02X%02X%02X%02X%02X");
-			ascii::sprintf(str, format, x_va(_mac[0]), x_va(_mac[1]), x_va(_mac[2]), x_va(_mac[3]), x_va(_mac[4]), x_va(_mac[5]));
+			crunes_t format("%02X%02X%02X%02X%02X%02X");
+			ascii::sprintf(str, format, va_t(_mac[0]), va_t(_mac[1]), va_t(_mac[2]), va_t(_mac[3]), va_t(_mac[4]), va_t(_mac[5]));
 		}
 	}
 
-	inline u32	from_bytes(xcbuffer const& bytes, u32 i, u32& value)
+	inline u32	from_bytes(cbuffer_t const& bytes, u32 i, u32& value)
 	{
 		u32 dst32;
-		xbyte* dst = (xbyte*)&dst32;
+		u8* dst = (u8*)&dst32;
 		*dst++ = bytes[i++];
 		*dst++ = bytes[i++];
 		*dst++ = bytes[i++];
@@ -158,17 +158,17 @@ namespace ncore
 		return i;
 	}
 
-	inline u32	 from_bytes(xcbuffer const& bytes, u32 i, u16& value)
+	inline u32	 from_bytes(cbuffer_t const& bytes, u32 i, u16& value)
 	{
 		u16 dst16;
-		xbyte* dst = (xbyte*)&dst16;
+		u8* dst = (u8*)&dst16;
 		*dst++ = bytes[i++];
 		*dst++ = bytes[i++];
 		value = dst16;
 		return i;
 	}
 
-	void xuuid::copyFrom(xcbuffer const& bytes)
+	void xuuid::copyFrom(cbuffer_t const& bytes)
 	{
 		u32 idx = 0;
 		u32 i32;
@@ -186,7 +186,7 @@ namespace ncore
 			_mac[i] = bytes[i];
 	}
 
-	inline u32	to_bytes(xbuffer& bytes, u32 idx, u32 value)
+	inline u32	to_bytes(buffer_t& bytes, u32 idx, u32 value)
 	{
 		bytes[idx++] = (value >> 24) & 0xFF;
 		bytes[idx++] = (value >> 16) & 0xFF;
@@ -195,14 +195,14 @@ namespace ncore
 		return idx;
 	}
 
-	inline u32	to_bytes(xbuffer& bytes, u32 idx, u16 value)
+	inline u32	to_bytes(buffer_t& bytes, u32 idx, u16 value)
 	{
 		bytes[idx++] = (value >> 8) & 0xFF;
 		bytes[idx++] = (value >> 0) & 0xFF;
 		return idx;
 	}
 
-	void xuuid::copyTo(xbuffer& bytes) const
+	void xuuid::copyTo(buffer_t& bytes) const
 	{
 		u32 idx = 0;
 		u32 i32 = x_NetworkEndian::swap(_timeLow);

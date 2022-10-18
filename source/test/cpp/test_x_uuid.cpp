@@ -1,5 +1,5 @@
-#include "xuuid/x_uuid.h"
-#include "xuuid/x_uuid_generator.h"
+#include "cuuid/c_uuid.h"
+#include "cuuid/c_uuid_generator.h"
 #include "cunittest/cunittest.h"
 
 using namespace ncore;
@@ -25,7 +25,7 @@ UNITTEST_SUITE_BEGIN(xuuid)
 
 		UNITTEST_TEST(generate_1)
 		{
-			xuuid_generator gen;
+			uuid_generator gen;
 			xuuid id = gen.create();
 			CHECK_FALSE(id.isNull());
 		}

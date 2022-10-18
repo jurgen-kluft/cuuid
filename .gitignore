@@ -1,8 +1,12 @@
 #ignore all files
-*.*
+*
+!*/
+
 vendor/
 
 #except the following files
+!.gitignore
+!.clang-format
 !*.go
 !*.cpp
 !*.hpp
