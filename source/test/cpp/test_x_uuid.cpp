@@ -1,8 +1,8 @@
 #include "xuuid/x_uuid.h"
 #include "xuuid/x_uuid_generator.h"
-#include "xunittest/xunittest.h"
+#include "cunittest/cunittest.h"
 
-using namespace xcore;
+using namespace ncore;
 
 UNITTEST_SUITE_BEGIN(xuuid)
 {
