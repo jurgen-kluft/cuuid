@@ -3,7 +3,6 @@ package cuuid
 import (
 	cbase "github.com/jurgen-kluft/cbase/package"
 	"github.com/jurgen-kluft/ccode/denv"
-	centry "github.com/jurgen-kluft/centry/package"
 	chash "github.com/jurgen-kluft/chash/package"
 	crandom "github.com/jurgen-kluft/crandom/package"
 	ctime "github.com/jurgen-kluft/ctime/package"
@@ -14,7 +13,6 @@ import (
 func GetPackage() *denv.Package {
 	// Dependencies
 	cunittestpkg := cunittest.GetPackage()
-	centrypkg := centry.GetPackage()
 	cbasepkg := cbase.GetPackage()
 	ctimepkg := ctime.GetPackage()
 	chashpkg := chash.GetPackage()
@@ -23,7 +21,6 @@ func GetPackage() *denv.Package {
 	// The main (cuuid) package
 	mainpkg := denv.NewPackage("cuuid")
 	mainpkg.AddPackage(cunittestpkg)
-	mainpkg.AddPackage(centrypkg)
 	mainpkg.AddPackage(cbasepkg)
 	mainpkg.AddPackage(ctimepkg)
 	mainpkg.AddPackage(chashpkg)
@@ -39,7 +36,6 @@ func GetPackage() *denv.Package {
 	// 'cuuid' unittest project
 	maintest := denv.SetupDefaultCppTestProject("cuuid_test", "github.com\\jurgen-kluft\\cuuid")
 	maintest.Dependencies = append(maintest.Dependencies, cunittestpkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, centrypkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, cbasepkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, ctimepkg.GetMainLib())
 	maintest.Dependencies = append(maintest.Dependencies, chashpkg.GetMainLib())
