@@ -2,7 +2,7 @@ package cuuid
 
 import (
 	cbase "github.com/jurgen-kluft/cbase/package"
-	"github.com/jurgen-kluft/ccode/denv"
+	denv "github.com/jurgen-kluft/ccode/denv"
 	chash "github.com/jurgen-kluft/chash/package"
 	crandom "github.com/jurgen-kluft/crandom/package"
 	ctime "github.com/jurgen-kluft/ctime/package"

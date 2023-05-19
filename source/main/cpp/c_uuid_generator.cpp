@@ -1,8 +1,7 @@
-#include "cbase/c_debug.h"
+#include "ccore/c_debug.h"
 #include "cbase/c_runes.h"
 #include "cuuid/c_uuid_generator.h"
-#include "chash/c_md5.h"
-
+#include "chash/c_hash.h"
 
 namespace ncore
 {

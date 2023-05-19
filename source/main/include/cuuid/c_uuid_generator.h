@@ -1,6 +1,6 @@
 #ifndef __CUUID_UUID_GENERATOR_H__
 #define __CUUID_UUID_GENERATOR_H__
-#include "cbase/c_target.h"
+#include "ccore/c_target.h"
 #ifdef USE_PRAGMA_ONCE 
 #pragma once 
 #endif
@@ -23,31 +23,31 @@ namespace ncore
 	{
 	public:
 								uuid_generator();
-								/// Creates the uuid_generator.
+								// Creates the uuid_generator.
 
 								~uuid_generator();
-								/// Destroys the uuid_generator.
+								// Destroys the uuid_generator.
 
-		xuuid					create();
-		/// Creates a new time-based xuuid, using the MAC address of
-		/// one of the system's ethernet adapters.
+		uuid_t					create();
+		// Creates a new time-based uuid_t, using the MAC address of
+		// one of the system's ethernet adapters.
 
-		xuuid					createFromName(const xuuid& nsid, const crunes_t& name);
-		/// Creates a name-based xuuid.
+		uuid_t					createFromName(const uuid_t& nsid, const crunes_t& name);
+		// Creates a name-based uuid_t.
 
-		xuuid					createFromName(const xuuid& nsid, const crunes_t& name, xdigest_engine& de);
-		/// Creates a name-based xuuid, using the given digest engine.
+		uuid_t					createFromName(const uuid_t& nsid, const crunes_t& name, digest_engine_t& de);
+		// Creates a name-based uuid_t, using the given digest engine.
 
-		xuuid					createRandom();
-		/// Creates a random xuuid.
+		uuid_t					createRandom();
+		// Creates a random uuid_t.
 
-		xuuid					createOne();
-		/// Tries to create and return a time-based xuuid (see create()), and, 
-		/// if that does not work due to the unavailability of a MAC address,
-		/// creates and returns a random xuuid (see createRandom()).
-		///
-		/// The xuuid::version() method can be used to determine the actual kind of
-		/// the xuuid generated.
+		uuid_t					createOne();
+		// Tries to create and return a time-based uuid_t (see create()), and, 
+		// if that does not work due to the unavailability of a MAC address,
+		// creates and returns a random uuid_t (see createRandom()).
+		//
+		// The uuid_t::version() method can be used to determine the actual kind of
+		// the uuid_t generated.
 
 	protected:
 		void					init();
