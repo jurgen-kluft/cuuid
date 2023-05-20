@@ -5,11 +5,11 @@
 
 namespace ncore
 {
-	class xuuid_ : public xuuid
+	class xuuid_ : public uuid_t
 	{
 	public:
-		xuuid_(cbuffer_t const& bytes, Version version)
-			: xuuid(bytes, version)
+		xuuid_(const u8* bytes, Version version)
+			: uuid_t(bytes, version)
 		{
 		}
 	};
@@ -36,7 +36,7 @@ namespace ncore
 		}
 	}
 
-	xuuid uuid_generator::create()
+	uuid_t uuid_generator::create()
 	{
 		init();
 
@@ -46,57 +46,52 @@ namespace ncore
 		u64 tv = dt.toBinary();
 		u32 timeLow = u32(tv & 0xFFFFFFFF);
 		u16 timeMid = u16((tv >> 32) & 0xFFFF);
-		u16 timeHiAndVersion = u16((tv >> 48) & 0x0FFF) + (xuuid::UUID_TIME_BASED << 12);
-		u16 clockSeq = (u16(_random.randU32() >> 4) & 0x3FFF) | 0x8000;
-		return xuuid(timeLow, timeMid, timeHiAndVersion, clockSeq, _mac);
+		u16 timeHiAndVersion = u16((tv >> 48) & 0x0FFF) + (uuid_t::UUID_TIME_BASED << 12);
+		u16 clockSeq = (u16(_random.generate() >> 4) & 0x3FFF) | 0x8000;
+		return uuid_t(timeLow, timeMid, timeHiAndVersion, clockSeq, _mac);
 	}
 
-	xuuid uuid_generator::createFromName(const xuuid& nsid, const crunes_t& name)
+	uuid_t uuid_generator::createFromName(const uuid_t& nsid, const crunes_t& name)
 	{
 		init();
 
-		xdigest_engine_md5 md5;
+		hash_ctxt_t md5;
 		return createFromName(nsid, name, md5);
 	}
 
-	xuuid uuid_generator::createFromName(const xuuid& nsid, const crunes_t& name, xdigest_engine& de)
+	uuid_t uuid_generator::createFromName(const uuid_t& nsid, const crunes_t& name, hash_ctxt_t de)
 	{
-		ASSERT(de.length() == 16);
+		ASSERT(hash_size(de) == 16);
 		init();
 
-		u8s16 uuid_buffer16;
-		buffer_t uuid_buffer = uuid_buffer16.buffer();
+		u8 uuid_buffer[16];
 
-		xuuid netNsid = nsid;
+		uuid_t netNsid = nsid;
 		netNsid.copyTo(uuid_buffer);
-		cbuffer_t uuid_cbuffer = uuid_buffer.cbuffer();
 
-		u8s16 digest;
-		buffer_t buffer = digest.buffer();
-		cbuffer_t cbuffer = digest.cbuffer();
+		u8 digest[16];
 
-		de.reset();
-		de.update(uuid_cbuffer( 0, 4));
-		de.update(uuid_cbuffer( 4, 2));
-		de.update(uuid_cbuffer( 6, 2));
-		de.update(uuid_cbuffer( 8, 2));
-		de.update(uuid_cbuffer(10, 6));
-		de.update(name.buffer());
-		de.digest(buffer);
+		hash_begin(de);
+		hash_update(de, &uuid_buffer[ 0], 4);
+		hash_update(de, &uuid_buffer[ 4], 2);
+		hash_update(de, &uuid_buffer[ 6], 2);
+		hash_update(de, &uuid_buffer[ 8], 2);
+		hash_update(de, &uuid_buffer[10], 6);
+		hash_update(de, (const u8*)&name.m_ascii.m_bos[name.m_ascii.m_str], name.m_ascii.m_end - name.m_ascii.m_str);
+		hash_end(de, digest, 16);
 
-		return xuuid_(cbuffer, xuuid::UUID_NAME_BASED);
+		return xuuid_(digest, uuid_t::UUID_NAME_BASED);
 	}
 
 
-	xuuid uuid_generator::createRandom()
+	uuid_t uuid_generator::createRandom()
 	{
 		init();
 
-		u8s16 buffer16;
-		buffer_t buffer = buffer16.buffer();
-		cbuffer_t cbuffer = buffer16.cbuffer();
-		_random.randBuffer(buffer);
-		return xuuid_(cbuffer, xuuid::UUID_RANDOM);
+		u8 buffer[16];
+		nrnd::randBuffer(buffer, 16);
+
+		return xuuid_(buffer, uuid_t::UUID_RANDOM);
 	}
 
 
@@ -123,7 +118,7 @@ namespace ncore
 	}
 
 
-	xuuid uuid_generator::createOne()
+	uuid_t uuid_generator::createOne()
 	{
 		return create();
 	}

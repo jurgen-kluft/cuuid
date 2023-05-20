@@ -12,6 +12,22 @@ namespace ncore
 {
     struct mac_t
     {
+        void clear()
+        {
+            for (int i = 0; i < 6; ++i)
+                m_data[i] = 0;
+        }
+        static s8 compare(const mac_t& lhs, const mac_t& rhs)
+        {
+            for (int i = 0; i < 6; ++i)
+            {
+                if (lhs.m_data[i] < rhs.m_data[i])
+                    return -1;
+                else if (lhs.m_data[i] > rhs.m_data[i])
+                    return 1;
+            }
+            return 0;
+        }
         u8 m_data[6];
     };
 
@@ -69,13 +85,13 @@ namespace ncore
         /// Returns a string representation of the uuid_t consisting
         /// of groups of hexadecimal digits separated by hyphens.
 
-        void copyFrom(cbuffer_t const& buffer);
+        void copyFrom(const u8* buffer);
         /// Copies the uuid_t (16 bytes) from a buffer or byte array.
         /// The uuid_t fields are expected to be
         /// stored in network byte order.
         /// The buffer need not be aligned.
 
-        void copyTo(buffer_t& buffer) const;
+        void copyTo(u8* buffer) const;
         /// Copies the uuid_t to the buffer. The fields
         /// are in network byte order.
         /// The buffer need not be aligned.
@@ -119,7 +135,7 @@ namespace ncore
 
     protected:
         uuid_t(u32 timeLow, u32 timeMid, u32 timeHiAndVersion, u16 clockSeq, mac_t mac);
-        uuid_t(cbuffer_t const& bytes, Version version);
+        uuid_t(const u8* bytes, Version version);
 
         s32 compare(const uuid_t& uuid) const;
 
@@ -146,21 +162,13 @@ namespace ncore
     // inlines
     //
     inline bool uuid_t::operator==(const uuid_t& uuid) const { return compare(uuid) == 0; }
-
     inline bool uuid_t::operator!=(const uuid_t& uuid) const { return compare(uuid) != 0; }
-
     inline bool uuid_t::operator<(const uuid_t& uuid) const { return compare(uuid) < 0; }
-
     inline bool uuid_t::operator<=(const uuid_t& uuid) const { return compare(uuid) <= 0; }
-
     inline bool uuid_t::operator>(const uuid_t& uuid) const { return compare(uuid) > 0; }
-
     inline bool uuid_t::operator>=(const uuid_t& uuid) const { return compare(uuid) >= 0; }
-
     inline uuid_t::Version uuid_t::version() const { return Version(_timeHiAndVersion >> 12); }
-
     inline bool uuid_t::isNull() const { return compare(null()) == 0; }
-
     inline void swap(uuid_t& u1, uuid_t& u2) { u1.swap(u2); }
 
 }  // namespace ncore

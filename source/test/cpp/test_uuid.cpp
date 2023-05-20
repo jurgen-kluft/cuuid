@@ -4,7 +4,7 @@
 
 using namespace ncore;
 
-UNITTEST_SUITE_BEGIN(xuuid)
+UNITTEST_SUITE_BEGIN(uuid)
 {
     UNITTEST_FIXTURE(main)
     {
@@ -13,20 +13,20 @@ UNITTEST_SUITE_BEGIN(xuuid)
 
 		UNITTEST_TEST(is_null)
 		{
-			xuuid id;
+			uuid_t id;
 			CHECK_TRUE(id.isNull());
 		}
 
 		UNITTEST_TEST(test)
 		{
-			xuuid id("A0B1C2D3-AACC-88EE-FF44-5566AADD2200");
+			uuid_t id("A0B1C2D3-AACC-88EE-FF44-5566AADD2200");
 			CHECK_FALSE(id.isNull());
 		}
 
 		UNITTEST_TEST(generate_1)
 		{
 			uuid_generator gen;
-			xuuid id = gen.create();
+			uuid_t id = gen.create();
 			CHECK_FALSE(id.isNull());
 		}
 	}
