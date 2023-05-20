@@ -55,11 +55,11 @@ namespace ncore
 	{
 		init();
 
-		hash_ctxt_t md5;
+		hashtype_t md5;
 		return createFromName(nsid, name, md5);
 	}
 
-	uuid_t uuid_generator::createFromName(const uuid_t& nsid, const crunes_t& name, hash_ctxt_t de)
+	uuid_t uuid_generator::createFromName(const uuid_t& nsid, const crunes_t& name, hashtype_t de)
 	{
 		ASSERT(hash_size(de) == 16);
 		init();

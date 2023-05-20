@@ -36,7 +36,7 @@ namespace ncore
         uuid_t createFromName(const uuid_t& nsid, const crunes_t& name);
         // Creates a name-based uuid_t.
 
-        uuid_t createFromName(const uuid_t& nsid, const crunes_t& name, hash_ctxt_t de);
+        uuid_t createFromName(const uuid_t& nsid, const crunes_t& name, hashtype_t de);
         // Creates a name-based uuid_t, using the given digest engine.
 
         uuid_t createRandom();
