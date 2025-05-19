@@ -30,21 +30,21 @@ func GetPackage() *denv.Package {
 	mainpkg.AddPackage(crandompkg)
 
 	// 'cuuid' library
-	mainlib := denv.SetupDefaultCppLibProject("cuuid", "github.com\\jurgen-kluft\\cuuid")
-	mainlib.Dependencies = append(mainlib.Dependencies, cbasepkg.GetMainLib())
-	mainlib.Dependencies = append(mainlib.Dependencies, ccorepkg.GetMainLib())
-	mainlib.Dependencies = append(mainlib.Dependencies, ctimepkg.GetMainLib())
-	mainlib.Dependencies = append(mainlib.Dependencies, chashpkg.GetMainLib())
-	mainlib.Dependencies = append(mainlib.Dependencies, crandompkg.GetMainLib())
+	mainlib := denv.SetupCppLibProject("cuuid", "github.com\\jurgen-kluft\\cuuid")
+	mainlib.AddDependencies(cbasepkg.GetMainLib()...)
+	mainlib.AddDependencies(ccorepkg.GetMainLib()...)
+	mainlib.AddDependencies(ctimepkg.GetMainLib()...)
+	mainlib.AddDependencies(chashpkg.GetMainLib()...)
+	mainlib.AddDependencies(crandompkg.GetMainLib()...)
 
 	// 'cuuid' unittest project
 	maintest := denv.SetupDefaultCppTestProject("cuuid_test", "github.com\\jurgen-kluft\\cuuid")
-	maintest.Dependencies = append(maintest.Dependencies, cunittestpkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, cbasepkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, ccorepkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, ctimepkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, chashpkg.GetMainLib())
-	maintest.Dependencies = append(maintest.Dependencies, crandompkg.GetMainLib())
+	maintest.AddDependencies(cunittestpkg.GetMainLib()...)
+	maintest.AddDependencies(cbasepkg.GetMainLib()...)
+	maintest.AddDependencies(ccorepkg.GetMainLib()...)
+	maintest.AddDependencies(ctimepkg.GetMainLib()...)
+	maintest.AddDependencies(chashpkg.GetMainLib()...)
+	maintest.AddDependencies(crandompkg.GetMainLib()...)
 	maintest.Dependencies = append(maintest.Dependencies, mainlib)
 
 	mainpkg.AddMainLib(mainlib)
