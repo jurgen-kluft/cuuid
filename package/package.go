@@ -21,7 +21,7 @@ func GetPackage() *denv.Package {
 	crandompkg := crandom.GetPackage()
 
 	// The main (cuuid) package
-	mainpkg := denv.NewPackage("cuuid")
+	mainpkg := denv.NewPackage("github.com\\jurgen-kluft", "cuuid")
 	mainpkg.AddPackage(cunittestpkg)
 	mainpkg.AddPackage(cbasepkg)
 	mainpkg.AddPackage(ccorepkg)
@@ -30,7 +30,7 @@ func GetPackage() *denv.Package {
 	mainpkg.AddPackage(crandompkg)
 
 	// 'cuuid' library
-	mainlib := denv.SetupCppLibProject("cuuid", "github.com\\jurgen-kluft\\cuuid")
+	mainlib := denv.SetupCppLibProject(mainpkg, "cuuid")
 	mainlib.AddDependencies(cbasepkg.GetMainLib()...)
 	mainlib.AddDependencies(ccorepkg.GetMainLib()...)
 	mainlib.AddDependencies(ctimepkg.GetMainLib()...)
@@ -38,14 +38,14 @@ func GetPackage() *denv.Package {
 	mainlib.AddDependencies(crandompkg.GetMainLib()...)
 
 	// 'cuuid' unittest project
-	maintest := denv.SetupDefaultCppTestProject("cuuid_test", "github.com\\jurgen-kluft\\cuuid")
+	maintest := denv.SetupCppTestProject(mainpkg, "cuuid_test")
 	maintest.AddDependencies(cunittestpkg.GetMainLib()...)
 	maintest.AddDependencies(cbasepkg.GetMainLib()...)
 	maintest.AddDependencies(ccorepkg.GetMainLib()...)
 	maintest.AddDependencies(ctimepkg.GetMainLib()...)
 	maintest.AddDependencies(chashpkg.GetMainLib()...)
 	maintest.AddDependencies(crandompkg.GetMainLib()...)
-	maintest.Dependencies = append(maintest.Dependencies, mainlib)
+	maintest.AddDependency(mainlib)
 
 	mainpkg.AddMainLib(mainlib)
 	mainpkg.AddUnittest(maintest)
